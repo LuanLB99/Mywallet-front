@@ -1,0 +1,98 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+
+
+
+export default function Login(){
+
+    const [FormLog, setFormLog] = useState({});
+
+    function handleForm({name, value}){
+        console.log(name, value)
+        setFormLog({
+            ...FormLog,[name]:value,
+        })
+    }
+
+    function sendForm(e){
+        e.preventDefault()
+        console.log(FormLog);
+    }
+
+
+    return <Content>
+        <MainContent>
+        <h1>MyWallet</h1>
+        <FormLogin>
+            <input type="email" placeholder="E-mail" name="email" onChange={(e) => handleForm({
+                name:e.target.name,
+                value:e.target.value,
+            })}/>
+            <input type="password" placeholder="Senha" name="password" onChange={(e) => handleForm({
+                name:e.target.name,
+                value:e.target.value,
+            })}/>
+            <Button onClick={sendForm} >Entrar</Button>
+        </FormLogin>
+        <Link to={"/sign"}><h4>Primeira vez? Cadastre-se!</h4></Link> 
+        </MainContent>
+
+        
+        </Content>
+}
+
+const Content = styled.div`
+    height: 667px;
+    width: 330px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin:0 auto;
+    
+    a{
+        text-decoration:none;
+    }
+`
+const MainContent = styled.div`
+    width: 90%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction: column;
+    h1{
+        color:white;
+    }
+    h4{
+        color:white;
+        font-family:Raleway;
+    }
+`
+const FormLogin = styled.form`
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+
+    input{
+        width:90%;
+        height:40px;
+        border-radius:3px;
+        border:none;
+        margin: 3px auto;
+    }
+
+    input::placeholder {
+        color: black;
+      }
+`
+
+const Button = styled.button`
+    color: white;
+    background:#A328D6;
+    border-radius: 5px;
+    border:none;
+    width:90%;
+    height:40px;
+`
