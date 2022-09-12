@@ -1,30 +1,39 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { postLogin } from "../Services/Services";
 
-export default function Sign(){
-    const [FormSig, setFormSig] = useState({});
+
+
+
+export default function Login(){
+
+    const [FormLog, setFormLog] = useState({});
+    const navigate = useNavigate();
 
     function handleForm({name, value}){
-        console.log(name, value)
-        setFormSig({
-            ...FormSig,[name]:value,
+        setFormLog({
+            ...FormLog,[name]:value,
         })
     }
 
     function sendForm(e){
         e.preventDefault()
-        console.log(FormSig);
+        postLogin(FormLog).then((res) => {
+            localStorage.setItem('token', JSON.stringify(res.data))
+            navigate('/main')
+        })
+        .catch((res) => {
+           alert(res.response.data);
+        })
+
     }
+
 
     return <Content>
         <MainContent>
         <h1>MyWallet</h1>
-        <FormSign>
-            <input type="text" placeholder="Nome" name="nome" onChange={(e) => handleForm({
-                name:e.target.name,
-                value:e.target.value,
-            })}/>
+        <FormLogin>
             <input type="email" placeholder="E-mail" name="email" onChange={(e) => handleForm({
                 name:e.target.name,
                 value:e.target.value,
@@ -33,13 +42,9 @@ export default function Sign(){
                 name:e.target.name,
                 value:e.target.value,
             })}/>
-            <input type="password" placeholder="Confirme a senha" name="confirmpassword" onChange={(e) => handleForm({
-                name:e.target.name,
-                value:e.target.value,
-            })}/>
-            <Button onClick={sendForm} >Cadastrar</Button>
-        </FormSign>
-        <Link to={"/"}><h4>Já tem uma conta? Entre agora!</h4></Link> 
+            <Button onClick={sendForm} >Entrar</Button>
+        </FormLogin>
+        <Link to={"/sign"}><h4>Primeira vez? Cadastre-se!</h4></Link> 
         </MainContent>
 
         
@@ -72,7 +77,7 @@ const MainContent = styled.div`
         font-family:Raleway;
     }
 `
-const FormSign = styled.form`
+const FormLogin = styled.form`
     width:100%;
     display:flex;
     justify-content:center;

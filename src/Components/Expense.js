@@ -1,43 +1,48 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import outdoor from "./Vetores/outdoor.png";
+import outdoor from "../Vetores/outdoor.png";
+import { postTransaction } from "../Services/Services";
 
 
+export default function Expense(){
 
-export default function Income(){
-
-    const [formIncome, setFormIncome] = useState({});
+const [formExpense, setFormExpense] = useState({type:"Saída"});
+const navigate =  useNavigate();
 
     function handleForm({name, value}){
-        console.log(name, value)
-        setFormIncome({
-            ...formIncome,[name]:value,
+        setFormExpense({
+            ...formExpense,[name]:value,
         })
     }
 
     function sendForm(e){
         e.preventDefault()
-        console.log(formIncome);
+        postTransaction(formExpense).then((res) => {
+           navigate('/main', {state:res.data})
+        })
+       .catch((res) => {
+        alert("Transação não autorizada!")
+       })
     }
 
     return<>
     <Content>
     <Header>
-        <div>Nova entrada</div>
+        <div>Nova saída</div>
         <Link to={'/main'}><img src={outdoor} alt="porta de saída"/></Link>
     </Header>
-    <FormIncome>
-            <input type="number" placeholder="Valor" name="valor" onChange={(e) => handleForm({
+    <FormExpense>
+            <input type="number" placeholder="Valor" name="value" onChange={(e) => handleForm({
                 name:e.target.name,
                 value:e.target.value,
             })}/>
-            <input type="text" placeholder="Descrição" name="descrição" onChange={(e) => handleForm({
+            <input type="text" placeholder="Descrição" name="description" onChange={(e) => handleForm({
                 name:e.target.name,
                 value:e.target.value,
-            })} />
-            <Button onClick={sendForm}>Salvar entrada</Button>
-    </FormIncome>
+            })}/>
+            <Button onClick={sendForm} >Salvar saída</Button>
+        </FormExpense>
     </Content>
     </>
 }
@@ -67,7 +72,7 @@ const Header = styled.div`
     margin: 10px 0;
 `
 
-const FormIncome = styled.form`
+const FormExpense = styled.form`
     width:100%;
     display:flex;
     justify-content:center;

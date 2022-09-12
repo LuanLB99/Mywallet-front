@@ -1,30 +1,37 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { postSign } from "../Services/Services";
 
 
-
-export default function Login(){
-
-    const [FormLog, setFormLog] = useState({});
+export default function Sign(){
+    const [FormSig, setFormSig] = useState({});
+    const navigate = useNavigate();
 
     function handleForm({name, value}){
-        console.log(name, value)
-        setFormLog({
-            ...FormLog,[name]:value,
+        setFormSig({
+            ...FormSig,[name]:value,
         })
     }
 
     function sendForm(e){
         e.preventDefault()
-        console.log(FormLog);
+        postSign(FormSig).then((res) =>{
+            navigate('/');
+        })
+        .catch((res) =>{
+            alert(res.response.data)
+        })
     }
-
 
     return <Content>
         <MainContent>
         <h1>MyWallet</h1>
-        <FormLogin>
+        <FormSign>
+            <input type="text" placeholder="Nome" name="name" onChange={(e) => handleForm({
+                name:e.target.name,
+                value:e.target.value,
+            })}/>
             <input type="email" placeholder="E-mail" name="email" onChange={(e) => handleForm({
                 name:e.target.name,
                 value:e.target.value,
@@ -33,9 +40,13 @@ export default function Login(){
                 name:e.target.name,
                 value:e.target.value,
             })}/>
-            <Button onClick={sendForm} >Entrar</Button>
-        </FormLogin>
-        <Link to={"/sign"}><h4>Primeira vez? Cadastre-se!</h4></Link> 
+            <input type="password" placeholder="Confirme a senha" name="repeat_password" onChange={(e) => handleForm({
+                name:e.target.name,
+                value:e.target.value,
+            })}/>
+            <Button onClick={sendForm} >Cadastrar</Button>
+        </FormSign>
+        <Link to={"/"}><h4>Já tem uma conta? Entre agora!</h4></Link> 
         </MainContent>
 
         
@@ -68,7 +79,7 @@ const MainContent = styled.div`
         font-family:Raleway;
     }
 `
-const FormLogin = styled.form`
+const FormSign = styled.form`
     width:100%;
     display:flex;
     justify-content:center;
