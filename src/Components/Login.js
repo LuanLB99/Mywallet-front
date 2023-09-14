@@ -44,7 +44,15 @@ export default function Login() {
   return (
     <Content>
       <MainContent>
-        <h1>MyWallet</h1>
+        <HeaderContent>
+          <img
+            width="64"
+            height="64"
+            src="https://img.icons8.com/wired/64/wallet.png"
+            alt="wallet"
+          />
+          <h1>MyWallet</h1>
+        </HeaderContent>
         <FormLogin>
           <input
             type="email"
@@ -70,7 +78,13 @@ export default function Login() {
           />
           <Button onClick={sendForm}>Entrar</Button>
           <GoogleButton onClick={handleClickButton}>
-            Login com o Google
+            <img
+              width="20"
+              height="20"
+              src="https://img.icons8.com/3d-fluency/94/google-logo.png"
+              alt="google-logo"
+            />
+            <div>Login com o Google</div>
           </GoogleButton>
         </FormLogin>
         <Link to={"/sign"}>
@@ -115,9 +129,9 @@ const FormLogin = styled.form`
   flex-direction: column;
 
   input {
-    width: 90%;
+    width: 80%;
     height: 40px;
-    border-radius: 3px;
+    border-radius: 5px;
     border: none;
     margin: 3px auto;
   }
@@ -132,7 +146,7 @@ const Button = styled.button`
   background: #a328d6;
   border-radius: 5px;
   border: none;
-  width: 90%;
+  width: 80%;
   height: 40px;
   margin-top: 7px;
   cursor: pointer;
@@ -143,8 +157,22 @@ const GoogleButton = styled.button`
   background: #a328d6;
   border-radius: 5px;
   border: none;
-  width: 90%;
+  width: 80%;
   height: 40px;
   margin-top: 7px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  div {
+    margin-left: 5px;
+  }
+`;
+
+const HeaderContent = styled.div`
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
